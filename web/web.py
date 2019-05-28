@@ -41,5 +41,9 @@ def page_sendGraph():
     else:
         return 'Error: %s' % ret
 
+@app.route('/js-licenses')
+def page_js_licenses():
+    return render_template('js-licenses.html', page='js-licenses')
+
 if __name__ == '__main__':
     app.run(host='localhost', port=3000)
