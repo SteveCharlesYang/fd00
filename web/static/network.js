@@ -172,7 +172,7 @@ function showNodeInfo(node) {
 
     var html =
         '<h2>' + node.label + '</h2>' +
-        '<span class="tt">' + node.id + '</span><br>' +
+        '<span class="tt"><a href="http://[' + node.id + ']">'+node.id+'</a></span><br>' +
         '<br>' +
         '<strong>Version:</strong> ' + node.version + '<br>' +
         '<strong>Peers:</strong> ' + node.peers.length + '<br>' +
