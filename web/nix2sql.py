@@ -39,4 +39,5 @@ def insertData(graph_data, config):
 if __name__ == "__main__":
     json = getJSON()
     config = Config("./")
+    config.from_pyfile('web_config.cfg')
     insertData(json,config)

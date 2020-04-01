@@ -28,5 +28,5 @@ CREATE TABLE `nodes` (
   `version` int(11) DEFAULT NULL,
   `first_seen` int(11) NOT NULL,
   `last_seen` int(11) NOT NULL,
-  PRIMARY KEY (`ip`)
+  PRIMARY KEY (`asn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
