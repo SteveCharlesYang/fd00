@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %}
+<div id="content-wrapper">
+  <div id="content">
+    <h3>{{lookup['aut-num']}}</h3>
+    <div class="tit">{{lookup['as-name']}}</div>
+    <div>
+      {% for remarks in lookup['remarks'] %}
+      <p>{{remarks}}</p>
+      {% endfor %}
+    </div>
+    <hr />
+    <table style="width: inherit;">
+      {% for inetnum in lookup['inetnum'] %}
+      <tr>
+        <td>{{inetnum.netname}}</td>
+        <td>{{inetnum.inum}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <table style="width: inherit;">
+      {% for inetnum6 in lookup['inet6num'] %}
+      <tr>
+        <td>{{inetnum6.netname}}</td>
+        <td>{{inetnum6.inum}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

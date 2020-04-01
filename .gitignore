@@ -4,3 +4,5 @@ graph.json
 web_config.cfg
 lighttp.conf
 mapper-confs/
+web/registry
+web/network-registry

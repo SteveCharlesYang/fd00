@@ -22,12 +22,12 @@ class NodeDB:
     def insert_node(self, node):
         now = int(time.time())
         self.cur.execute('''
-            INSERT INTO nodes (ip, name, version, first_seen, last_seen)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO nodes (asn, name, first_seen, last_seen)
+            VALUES (%s, %s, %s, %s)
             ON DUPLICATE KEY
-            UPDATE name = %s, version = %s, last_seen = %s''', (
-            node.ip, node.label, node.version, now, now,
-            node.label, node.version, now))
+            UPDATE name = %s, last_seen = %s''', (
+            node.asn, node.label, now, now,
+            node.label, now))
 
     def insert_edge(self, edge, uploaded_by):
         now = int(time.time())
@@ -36,11 +36,11 @@ class NodeDB:
                         VALUES (%s, %s, %s, %s, %s)
             ON DUPLICATE KEY
             UPDATE last_seen = %s''', (
-                                edge.a.ip, edge.b.ip, now, now, uploaded_by,
+                                edge.a.asn, edge.b.asn, now, now, uploaded_by,
                                 now))
 
     def insert_graph(self, nodes, edges, uploaded_by):
-        for n in nodes.itervalues():
+        for n in nodes.values():
             self.insert_node(n)
 
         for e in edges:
@@ -51,12 +51,12 @@ class NodeDB:
     def get_nodes(self, time_limit):
         since = int(time.time() - time_limit)
         cur = self.con.cursor(mdb.cursors.DictCursor)
-        cur.execute("SELECT ip, version, name FROM nodes WHERE last_seen > %s", (since,))
+        cur.execute("SELECT asn, name FROM nodes WHERE last_seen > %s", (since,))
         db_nodes = cur.fetchall()
 
         nodes = dict()
         for n in db_nodes:
-            nodes[n['ip']] = Node(n['ip'], n['version'], n['name'])
+            nodes[n['asn']] = Node(n['asn'], n['name'])
 
         return nodes
 

@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `cjdns`;
-USE `cjdns`;
+CREATE DATABASE  IF NOT EXISTS `dn42map`;
+USE `dn42map`;
 
 
 --
@@ -23,7 +23,7 @@ CREATE TABLE `edges` (
 
 DROP TABLE IF EXISTS `nodes`;
 CREATE TABLE `nodes` (
-  `ip` varchar(39) NOT NULL,
+  `asn` varchar(39) NOT NULL,
   `name` varchar(64) DEFAULT NULL,
   `version` int(11) DEFAULT NULL,
   `first_seen` int(11) NOT NULL,
