@@ -22,7 +22,7 @@
 				<li><a href="/lookup"{% if page == 'lookup' %} class="selected" {% endif %}>Lookup</a></li>
 				<li><a href="/about"{% if page == 'about' %} class="selected" {% endif %}>About</a></li>
 				<li><a href="https://github.com/SteveCharlesYang/fd00">Source</a></li>
-				<li><tt>{% if ip is not none %}{{ ip }}{% endif %}</tt></li>
+				<li><tt>{% if ip is not none %}Your IP: {{ ip }}{% endif %}</tt></li>
 			</ul>
 		</div>
 
