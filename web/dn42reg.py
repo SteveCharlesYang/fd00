@@ -1,8 +1,8 @@
 import json
+from flask import Config
 
-regconfig = {
-    "WHOIS_REG_DIR": "registry"
-}
+config = Config("./")
+config.from_pyfile('web_config.cfg')
 
 inetdb_file = open('network-registry/inetnum-as.json')
 inetdb = json.load(inetdb_file)
@@ -11,7 +11,7 @@ def getkey(ln):
     spl = ln.split(":", 1)
     return {
         "key": spl[0],
-        "val": spl[1]
+        "val": spl[1].lstrip()
     }
 
 
@@ -20,7 +20,7 @@ def getasnname(asn):
     if asn is None:
         return asname
     try:
-        f = open(regconfig["WHOIS_REG_DIR"] + "/data/aut-num/AS" + asn)
+        f = open(config["WHOIS_REG_DIR"] + "/data/aut-num/AS" + asn)
         for ln in f:
             if ln.startswith("as-name:"):
                 asname = ln[len("as-name:"):]

@@ -39,6 +39,9 @@ def page_lookup(lookup_str):
             return ""
         return render_template('lookup_asn.html', page='lookup', lookup=lookup_result)
 
+@app.route('/isp')
+def page_isp():
+    return render_template('ISPs.html', page='isp')
 
 @app.route('/about')
 def page_about():

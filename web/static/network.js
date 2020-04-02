@@ -179,6 +179,38 @@ function markPeers(node, depth) {
   }
 }
 
+function filterByPeers(peers_limit) {
+  var rm_list = [];
+  var rm_edge_list = [];
+  for (var i = 0; i < nodes.length; ++i) {
+    if (nodes[i].peers.length <= peers_limit) {
+      rm_list.push(nodes[i]);
+    }
+  }
+  for (let index = 0; index < rm_list.length; index++) {
+    nodes.splice(nodes.indexOf(rm_list[index]), 1);
+  }
+  for (var i = 0; i < edges.length; ++i) {
+    if (
+      !nodes.find(obj => {
+        return obj.id === edges[i].sourceID;
+      }) ||
+      !nodes.find(obj => {
+        return obj.id === edges[i].targetID;
+      })
+    ) {
+      rm_edge_list.push(edges[i]);
+    }
+  }
+  for (let index = 0; index < rm_edge_list.length; index++) {
+    edges.splice(nodes.indexOf(rm_edge_list[index]), 1);
+  }
+  clearNodes();
+  drawNetwork();
+  $("#number-of-nodes").text(nodes.length);
+  $("#number-of-connections").text(edges.length);
+}
+
 function showNodeInfo(node) {
   var ip_peers = [];
   var dns_peers = [];
