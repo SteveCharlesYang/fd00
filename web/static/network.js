@@ -7,6 +7,8 @@ var ctx = null;
 var mapOffset = { x: 0, y: 0 };
 var zoom = 1.0;
 
+var viewMode = "default";
+
 function changeHash(hash) {
   window.location.replace(("" + window.location).split("#")[0] + "#" + hash);
 }
@@ -177,6 +179,33 @@ function markPeers(node, depth) {
     var n = node.peers[i];
     if (n.depth > depth + 1) markPeers(n, depth + 1);
   }
+}
+
+function showDefault() {
+  for (var i = 0; i < nodes.length; ++i) {
+    if (nodes[i].default_color) nodes[i].originalColor = nodes[i].default_color;
+  }
+  clearNodes();
+  drawNetwork();
+}
+
+function showCommunity() {
+  var community_colors = [
+    "#F44336",
+    "#9C27B0",
+    "#2196F3",
+    "#4CAF50",
+    "#CDDC39",
+    "#FF5722"
+  ];
+  for (var i = 0; i < nodes.length; ++i) {
+    if (nodes[i].community.length != 0) {
+      nodes[i].default_color = nodes[i].originalColor;
+      nodes[i].originalColor = community_colors[nodes[i].community[0]];
+    }
+  }
+  clearNodes();
+  drawNetwork();
 }
 
 function filterByPeers(peers_limit) {
@@ -418,6 +447,20 @@ $(document).ready(function() {
       mouseHoverNode = node;
 
       drawNetwork();
+    }
+  });
+
+  $("#community").click(function() {
+    if (viewMode != "community") {
+      showCommunity();
+      viewMode = "community";
+    }
+  });
+
+  $("#default").click(function() {
+    if (viewMode != "default") {
+      showDefault();
+      viewMode = "default";
     }
   });
 

@@ -2,45 +2,56 @@
 
 var nodes = [];
 
+var tier_std = {
+  tier1: 0.08,
+  tier2: 0.03,
+  tier3: 0.005,
+  clients: 0
+};
+
 $(document).ready(function() {
   jQuery.getJSON("/static/graph.json", function(data) {
     nodes = data.nodes;
 
-    var tier1 = []
-    var tier2 = []
-    var tier3 = []
-    var clients = []
+    var tier1 = [];
+    var tier2 = [];
+    var tier3 = [];
+    var clients = [];
 
     for (var i = 0; i < nodes.length; ++i) {
-      if(nodes[i].centrality > 0.1){
-        tier1.push(nodes[i])
-      }
-      else if(nodes[i].centrality > 0.05){
-        tier2.push(nodes[i])
-      }
-      else if(nodes[i].centrality > 0.01){
-        tier3.push(nodes[i])
-      }
-      else{
-        clients.push(nodes[i])
+      if (nodes[i].centrality > tier_std["tier1"]) {
+        tier1.push(nodes[i]);
+      } else if (nodes[i].centrality > tier_std["tier2"]) {
+        tier2.push(nodes[i]);
+      } else if (nodes[i].centrality > tier_std["tier3"]) {
+        tier3.push(nodes[i]);
+      } else {
+        clients.push(nodes[i]);
       }
     }
 
-    renderList("#tier1", tier1)
-    renderList("#tier2", tier2)
-    renderList("#tier3", tier3)
-    renderList("#clients", clients)
-
+    renderList("tier1", tier1);
+    renderList("tier2", tier2);
+    renderList("tier3", tier3);
+    renderList("clients", clients);
   });
-
 });
 
-function renderList(tier, nodes){
-  var content = "<table style='width: 100%;'>"
-  for(var i=0; i<nodes.length; ++i){
-      content += '<tr><td>' + nodes[i].name + '</td><td>' + nodes[i].label + '</td></tr>';
+function renderList(tier, nodes) {
+  nodes.sort((a, b) =>
+    a.centrality > b.centrality ? -1 : b.centrality > a.centrality ? 1 : 0
+  );
+  var content =
+    "<p>" +
+    tier +
+    " ISPs have centrality more than " +
+    tier_std[tier] +
+    ".</p><table style='width: 100%;'>";
+  for (var i = 0; i < nodes.length; ++i) {
+    content +=
+      "<tr><td>" + nodes[i].name + "</td><td>" + nodes[i].label + "</td></tr>";
   }
-  content += "</table>"
-  
-  $(tier).append(content);
+  content += "</table>";
+
+  $("#" + tier).append(content);
 }

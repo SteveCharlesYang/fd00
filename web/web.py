@@ -31,17 +31,24 @@ def whois():
     return getwhois(request.args.get(search_key), search_key)
 
 
+@app.route("/lookup")
+def page_lookup_search():
+    return render_template('lookup_search.html', page='lookup')
+
+
 @app.route('/lookup/<lookup_str>')
 def page_lookup(lookup_str):
     if lookup_str.startswith('AS') and lookup_str[2:].isdigit():
         lookup_result = lookup_asn(lookup_str)
         if lookup_result == {}:
-            return ""
+            return "404 Not Found"
         return render_template('lookup_asn.html', page='lookup', lookup=lookup_result)
+    return "404 Not Found"
 
 @app.route('/isp')
 def page_isp():
     return render_template('ISPs.html', page='isp')
+
 
 @app.route('/about')
 def page_about():

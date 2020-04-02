@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block content %}
+<div id="content-wrapper">
+  <div id="content" style="width: 800px;">
+    <div style="text-align: center;">
+      <h2>Search for ASN, IP, MNT, DNS, etc.</h2>
+      <input id="searchval" />
+      <button id="searchbut">Search</button>
+      <p>Beta Testing, only ASNs start with AS is acceptable.</p>
+    </div>
+  </div>
+</div>
+<script>
+  $("#searchbut").click(function() {
+    window.location = "/lookup/" + $("#searchval").val();
+  });
+</script>
+{% endblock %}

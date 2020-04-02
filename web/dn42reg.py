@@ -35,7 +35,7 @@ def getwhois(search_str, search_type):
     if search_str is None:
         return whois
     try:
-        f = open(regconfig["WHOIS_REG_DIR"] + "/data/" +
+        f = open(config["WHOIS_REG_DIR"] + "/data/" +
                  search_type+"/" + search_str)
         for ln in f:
             k = getkey(ln)
