@@ -30,10 +30,15 @@ $(document).ready(function() {
 });
 
 function renderList(label, data) {
+  data.sort((a, b) => (a.CIDR > b.CIDR ? 1 : b.CIDR > a.CIDR ? -1 : 0));
   var content = "<table style='width: 100%;'>";
   for (var i = 0; i < data.length; ++i) {
     content +=
-      "<tr><td>" + data[i].CIDR + "</td><td>" + data[i].ASN.replace(/(^\[+|(i|\?)\]+$)/mg,'') + "</td></tr>";
+      "<tr><td>" +
+      data[i].CIDR +
+      "</td><td>" +
+      data[i].ASN.replace(/(^\[+|(i|\?)\]+$)/gm, "") +
+      "</td></tr>";
   }
   content += "</table>";
 
