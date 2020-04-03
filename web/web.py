@@ -36,6 +36,11 @@ def page_lookup_search():
     return render_template('lookup_search.html', page='lookup')
 
 
+@app.route("/roa")
+def page_roa():
+    return render_template('roa.html', page='roa')
+
+
 @app.route('/lookup/<lookup_str>')
 def page_lookup(lookup_str):
     if lookup_str.startswith('AS') and lookup_str[2:].isdigit():
@@ -44,6 +49,7 @@ def page_lookup(lookup_str):
             return "404 Not Found"
         return render_template('lookup_asn.html', page='lookup', lookup=lookup_result)
     return "404 Not Found"
+
 
 @app.route('/isp')
 def page_isp():
