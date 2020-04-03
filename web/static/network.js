@@ -190,6 +190,32 @@ function showDefault() {
 }
 
 function showCommunity() {
+  if ($("#community_id option").length == 0) {
+    var communities_list = [];
+    for (var i = 0; i < nodes.length; ++i) {
+      if (nodes[i].community.length != 0) {
+        nodes[i].community.forEach(community_id => {
+          if (!communities_list.includes(community_id))
+            communities_list.push(community_id);
+        });
+      }
+    }
+    communities_list.sort((a, b) => a - b);
+    communities_list.forEach(e => {
+      $("#community_id").append(
+        $("<option></option>")
+          .attr("value", e)
+          .text("Community" + e)
+      );
+    });
+  }
+  if ($("#community_id option").length != 0) {
+    $("#community_id").val(0);
+    select_community(0);
+  }
+}
+
+function select_community(community_id) {
   var community_colors = [
     "#F44336",
     "#9C27B0",
@@ -200,8 +226,14 @@ function showCommunity() {
   ];
   for (var i = 0; i < nodes.length; ++i) {
     if (nodes[i].community.length != 0) {
-      nodes[i].default_color = nodes[i].originalColor;
-      nodes[i].originalColor = community_colors[nodes[i].community[0]];
+      if (nodes[i].community.includes(community_id)) {
+        if (!nodes[i].default_color)
+          nodes[i].default_color = nodes[i].originalColor;
+        nodes[i].originalColor = community_colors[community_id];
+      } else {
+        if (nodes[i].default_color)
+          nodes[i].originalColor = nodes[i].default_color;
+      }
     }
   }
   clearNodes();
@@ -453,13 +485,19 @@ $(document).ready(function() {
   $("#community").click(function() {
     if (viewMode != "community") {
       showCommunity();
+      $("#community_div").show();
       viewMode = "community";
     }
+  });
+
+  $("#community_id").on("change", function() {
+    select_community(parseInt(this.value));
   });
 
   $("#default").click(function() {
     if (viewMode != "default") {
       showDefault();
+      $("#community_div").hide();
       viewMode = "default";
     }
   });
