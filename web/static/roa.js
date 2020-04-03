@@ -7,7 +7,7 @@ $(document).ready(function() {
     var data_obj6 = [];
     data.forEach(el => {
       if (el != "") {
-        var tmp = el.split(" ASN ");
+        var tmp = el.split(" ");
         if (
           tmp[0].match(
             /^([0-9]{1,3}\.){3}[0-9]{1,3}(\/([0-9]|[1-2][0-9]|3[0-2]))?$/
@@ -33,7 +33,7 @@ function renderList(label, data) {
   var content = "<table style='width: 100%;'>";
   for (var i = 0; i < data.length; ++i) {
     content +=
-      "<tr><td>" + data[i].CIDR + "</td><td>" + data[i].ASN + "</td></tr>";
+      "<tr><td>" + data[i].CIDR + "</td><td>" + data[i].ASN.replace(/(^\[+|(i|\?)\]+$)/mg,'') + "</td></tr>";
   }
   content += "</table>";
 
