@@ -263,8 +263,9 @@ function filterByPeers(peers_limit) {
       rm_edge_list.push(edges[i]);
     }
   }
+
   for (let index = 0; index < rm_edge_list.length; index++) {
-    edges.splice(nodes.indexOf(rm_edge_list[index]), 1);
+    edges.splice(edges.indexOf(rm_edge_list[index]),1);
   }
   clearNodes();
   drawNetwork();
@@ -485,8 +486,18 @@ $(document).ready(function() {
   $("#community").click(function() {
     if (viewMode != "community") {
       showCommunity();
+      $("#filter_div").hide();
       $("#community_div").show();
       viewMode = "community";
+    }
+  });
+
+  $("#filter").click(function() {
+    if (viewMode != "filter") {
+      $("#community_div").hide();
+      $("#filter_div").show();
+      viewMode = "filter";
+      $("#filter_id").val(0);
     }
   });
 
@@ -494,9 +505,14 @@ $(document).ready(function() {
     select_community(parseInt(this.value));
   });
 
+  $("#filter_id").on("change", function() {
+    filterByPeers(parseInt(this.value));
+  });
+
   $("#default").click(function() {
     if (viewMode != "default") {
       showDefault();
+      $("#filter_div").hide();
       $("#community_div").hide();
       viewMode = "default";
     }
