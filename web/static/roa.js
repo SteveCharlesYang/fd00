@@ -33,12 +33,15 @@ function renderList(label, data) {
   data.sort((a, b) => (a.CIDR > b.CIDR ? 1 : b.CIDR > a.CIDR ? -1 : 0));
   var content = "<table style='width: 100%;'>";
   for (var i = 0; i < data.length; ++i) {
+    data[i].ASN = data[i].ASN.replace(/(^\[+|(i|\?)\]+$)/gm, "");
     content +=
-      "<tr><td>" +
+      "<tr class='isp-item'><td>" +
       data[i].CIDR +
-      "</td><td>" +
-      data[i].ASN.replace(/(^\[+|(i|\?)\]+$)/gm, "") +
-      "</td></tr>";
+      "</td><td><a href='/lookup/" +
+      data[i].ASN +
+      "'>" +
+      data[i].ASN +
+      "</a></td></tr>";
   }
   content += "</table>";
 

@@ -49,7 +49,13 @@ function renderList(tier, nodes) {
     ".</p><table style='width: 100%;'>";
   for (var i = 0; i < nodes.length; ++i) {
     content +=
-      "<tr><td>" + nodes[i].name + "</td><td>" + nodes[i].label + "</td></tr>";
+      "<tr class='isp-item'><td><a href='/lookup/AS" +
+      nodes[i].name +
+      "'>" +
+      nodes[i].name +
+      "</a></td><td>" +
+      nodes[i].label +
+      "</td></tr>";
   }
   content += "</table>";
 

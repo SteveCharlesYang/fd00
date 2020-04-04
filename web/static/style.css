@@ -204,3 +204,11 @@ li {
 #content a {
   color: #29bbff;
 }
+
+.isp-item:hover {
+  background-color: #ddd;
+}
+
+.isp-item td a {
+  color: #333!important;
+}
