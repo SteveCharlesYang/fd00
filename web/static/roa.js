@@ -1,13 +1,13 @@
 "use strict";
 
 $(document).ready(function() {
-  jQuery.get("/static/roa.txt", function(data) {
+  jQuery.get("/static/roa.txt?t=" + Math.floor(Date.now() / 600000), function(data) {
     data = data.split(/\r?\n/);
     var data_obj4 = [];
     var data_obj6 = [];
     data.forEach(el => {
       if (el != "") {
-        var tmp = el.split(" ");
+        var tmp = el.split(/\s+/);
         if (
           tmp[0].match(
             /^([0-9]{1,3}\.){3}[0-9]{1,3}(\/([0-9]|[1-2][0-9]|3[0-2]))?$/

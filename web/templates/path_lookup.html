@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block content %}
+<div id="content-wrapper">
+  <div id="content" style="width: 800px;">
+    <div style="text-align: center;">
+      <h2>Show path graph for two ASNs</h2>
+      <input id="searchval1" />
+      <input id="searchval2" />
+      <button id="searchbut">Draw!</button>
+      <p>Beta testing.</p>
+    </div>
+  </div>
+</div>
+<script>
+  $("#searchbut").click(function() {
+    window.location = "/path_lookup/" + $("#searchval1").val() + "/" + $("#searchval2").val();
+  });
+</script>
+{% endblock %}

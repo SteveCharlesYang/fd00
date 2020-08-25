@@ -1,10 +1,15 @@
 import pygraphviz as pgv
 import time
 import json
+import copy
+import os.path
 import networkx as nx
 from networkx.algorithms import centrality
 from networkx.algorithms.community import k_clique_communities
+from flask import Config
 
+config = Config("./")
+config.from_pyfile('web_config.cfg')
 
 def position_nodes(nodes, edges):
     G = pgv.AGraph(strict=True, directed=False, size='10!')
@@ -42,7 +47,7 @@ def compute_community(G):
         for other in others:
             ng.add_edge(start, other)
 
-    c = k_clique_communities(ng, 5)
+    c = k_clique_communities(ng, 7)
 
     return c
 
@@ -70,15 +75,23 @@ def get_graph_json(G):
         'edges': []
     }
 
-    centralities = compute_betweenness(G)
+    G_ct = G.copy()
+    for n in G.nodes():
+        if not os.path.exists(config["WHOIS_REG_DIR"] + "/data/aut-num/AS" + n):
+            G_ct.remove_node(n)
+
+    centralities = compute_betweenness(G_ct)
 
     community_list = list(compute_community(G))
     #db = load_db()
     for n in G.iternodes():
         neighbor_ratio = len(G.neighbors(n)) / float(max_neighbors)
         pos = n.attr['pos'].split(',', 1)
-        centrality = centralities.get(n.name, 0)
-        pcentrality = (centrality + 0.0001) * 500
+        centrality = centralities.get(n.name, -1.0)
+        if centrality >= 0:
+            pcentrality = (centrality + 0.0001) * 500
+        else:
+            pcentrality = 0.0001 * 500
         size = (pcentrality ** 0.3 / 500) * 1000 + 1
         # name = db.get(n.name)
         name = n.name

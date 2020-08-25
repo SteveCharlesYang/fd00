@@ -6,14 +6,14 @@ import traceback
 from flask import Config
 
 def getJSON():
-    r = requests.get('https://nixnodes.net/dn42/aspath/nodes-d3js.json')
+    r = requests.get('http://map.dn42/aspath')
     return r.json()
 
 def insertData(graph_data, config):
     nodes = dict()
     edges = []
     for ind,n in enumerate(graph_data['nodes']):
-        node = Node(n['name'])
+        node = Node(str(n['asn']))
         nodes[ind] = node
     for e in graph_data['links']:
         edge = Edge(nodes[e['source']], nodes[e['target']])

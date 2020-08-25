@@ -302,7 +302,7 @@ function showNodeInfo(node) {
     node.id +
     '</a></span> <span class="tt"><a href="lookup/AS' +
     node.id +
-    '">[INFO]</a></span><br>' +
+    '">[INFO]</a></span> &nbsp; <span class="tt"><a href="as_graph/' + node.id + '">[GRAPH]</a></span><br>' +
     "<br>" +
     "<strong>Peers:</strong> " +
     node.peers.length +
@@ -342,7 +342,7 @@ $(document).ready(function() {
   ctx = canvas.getContext("2d");
   updateCanvasSize();
 
-  jQuery.getJSON("/static/graph.json", function(data) {
+  jQuery.getJSON("/static/graph.json?t=" + Math.floor(Date.now() / 600000), function(data) {
     nodes = data.nodes;
     edges = data.edges;
 

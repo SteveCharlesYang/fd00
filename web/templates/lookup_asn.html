@@ -1,12 +1,15 @@
 {% extends "base.html" %} {% block content %}
 <div id="content-wrapper">
   <div id="content">
-    <h3>{{lookup['aut-num']}}</h3>
-    <div class="tit">{{lookup['as-name']}}</div>
+    <h3>{{lookup['aut-num'][0]}}</h3>
+    <div class="tit">{{lookup['as-name'][0]}}</div>
     <div>
+	    <a href="/as_graph/{{ lookup['aut-num'][0] }}">BGP Map</a><br/>
+    {% if 'remarks' in lookup %}
       {% for remarks in lookup['remarks'] %}
-      <p>{{remarks}}</p>
+      <pre>{{remarks}}</pre>{% if remarks == '\n' %}<br/ >{% endif %}
       {% endfor %}
+    {% endif %}
     </div>
     <hr />
     <table style="width: inherit;">

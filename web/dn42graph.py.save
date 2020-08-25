@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+import json
+import pygraphviz as pgv
+import networkx as nx
+from networkx.algorithms import centrality
+from networkx.algorithms.community import k_clique_communities
+
+
+def get_graph(nodes, edges):
+    #G = pgv.AGraph(strict=True, directed=False, size='10!')
+    G = nx.Graph()
+    for n in nodes:
+        G.add_node(n['id'], label=n['label'])
+
+    for e in edges:
+        G.add_edge(e['sourceID'], e['targetID'], len=1.0)
+
+    return G
+
+def as_graph(asn):
+    all_nodes, all_edges = load_graph_from_db(60*60*3)
+    tier1s = [n for n in all_nodes if float(n['centrality']) > 0.08]
+    print(tier1s)
+    G = get_graph(all_nodes, all_edges)
+    paths_set = [nx.all_simple_paths(G, source=asn, target=k['id']) for k in tier1s]
+    print(paths_set[0][0])
+    return "test"
+
+def load_graph_from_db(time_limit):
+    with open('static/graph.json') as f:
+        db = json.load(f)
+        nodes = db['nodes']
+        edges = db['edges']
+        return (nodes, edges)
+
+

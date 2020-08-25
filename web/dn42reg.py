@@ -1,5 +1,6 @@
 import json
 from flask import Config
+#from pprint import pprint
 
 config = Config("./")
 config.from_pyfile('web_config.cfg')
@@ -37,21 +38,29 @@ def getwhois(search_str, search_type):
     try:
         f = open(config["WHOIS_REG_DIR"] + "/data/" +
                  search_type+"/" + search_str)
+        prevkey = ""
         for ln in f:
-            k = getkey(ln)
-            if(k["key"] in whois):
-                if(isinstance(whois[k["key"]], list)):
-                    whois[k["key"]].append(k["val"])
-                else:
-                    whois[k["key"]] = [whois[k["key"]], k["val"]]
+            if ln.startswith(" "):
+                whois[prevkey].append(ln.lstrip())
+            elif ln.startswith("+"):
+                whois[prevkey].append("\n")
             else:
-                whois[k["key"]] = k["val"]
+                k = getkey(ln)
+                prevkey = k["key"]
+                if(k["key"] in whois):
+               #     if(isinstance(whois[k["key"]], list)):
+                    whois[k["key"]].append(k["val"].rstrip())
+               #     else:
+               #         whois[k["key"]] = [whois[k["key"]], k["val"].rstrip()]
+                else:
+                    whois[k["key"]] = [k["val"].rstrip()]
     except IOError:
         pass
     if(search_str in inetdb["inet"]):
         whois["inetnum"] = inetdb["inet"][search_str]
     if(search_str in inetdb["inet6"]):
         whois["inet6num"] = inetdb["inet6"][search_str]
+    #pprint(whois)
     return whois
 
 
